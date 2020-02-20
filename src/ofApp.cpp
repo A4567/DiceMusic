@@ -14,6 +14,13 @@ void ofApp::setup(){
     soundVector.push_back(p2);
     soundVector.push_back(p3);
     soundVector.push_back(p4);
+    point.x = 0;
+    point.y = 0;
+    radius = 5;
+    rot = 0;
+    ofSetBackgroundAuto(false);
+    ofSetBackgroundColor(0);
+    
 }
 
 //--------------------------------------------------------------
@@ -24,20 +31,62 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    markov.draw(40, 60); // use the built in draw function to show coloured dots indicating the current transition
+  //  markov.draw(40, 60); // use the built in draw function to show coloured dots indicating the current transition
     
     int currentState;
     currentState = markov.getState(); // get the current state of the matrix
     if(!soundVector[currentState].isPlaying()){
         soundVector[currentState].play();
     }
-    if(soundVector[currentState].getPosition() > 0.7){
+    if(soundVector[currentState].getPosition() > 0.5){
+        rot = 0;
+        point.x = 0;
+        point.y = 0;
         soundVector[currentState].stop();
         markov.update();
     }
-    ofSetColor(255); // write the current state to the screen
-    ofDrawBitmapString("Press space to step forward \nThe current item in Markov Chain is: " + ofToString( currentState) , 40, 20);
+    switch(currentState){
+        case 0:
+            point.y += soundVector[currentState].getPosition() * 10;
+            rot += ofRandom(0,180);
+            break;
+        case 1:
+            point.y -= soundVector[currentState].getPosition() * 10;
+            rot += ofRandom(0,180);
+            break;
+        case 2:
+            point.x += soundVector[currentState].getPosition() * 10;
+            rot -= ofRandom(0,180);
+            break;
+        case 3:
+            point.x -= soundVector[currentState].getPosition() * 10;
+            rot -= ofRandom(0,180);
+            break;
+    }
+//    ofSetColor(255); // write the current state to the screen
+//    ofDrawBitmapString("Press space to step forward \nThe current item in Markov Chain is: " + ofToString( currentState) , 40, 20);
+    
+    ofPushMatrix();
+    
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+    if((point.x < -100)||(point.x > 100)||(point.y < -100)||(point.y > 100)){
+        ofRotateZDeg(rot);
+    }else{
+        ofRotateZDeg(-rot);
+    }
+    for(int i = 0; i < markov.getStatesNumber(); i++){
+        ofSetColor(ofRandom(25,200), ofRandom(25,200), ofRandom(25,200), 25);
+        ofDrawCircle(point*(1+i), radius*(i+1));
+    }
+
+    ofPopMatrix();
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if(key == 'c'){
+        //ofClear(0);
+        rot = 0;
+        point.x = 0;
+        point.y = 0;
+    }
 }

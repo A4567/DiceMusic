@@ -6,10 +6,10 @@ void ofApp::setup(){
     ofxMC::Matrix matrix("transitionMatrix.txt");
     markov.setup(matrix, 0);
     ofSoundPlayer p1,p2,p3,p4;
-    p1.load("p1.mp3");
-    p2.load("p2.mp3");
-    p3.load("p3.mp3");
-    p4.load("p4.mp3");
+    p1.load("c.mp3");
+    p2.load("g.mp3");
+    p3.load("d.mp3");
+    p4.load("f.mp3");
     soundVector.push_back(p1);
     soundVector.push_back(p2);
     soundVector.push_back(p3);
@@ -31,7 +31,7 @@ void ofApp::draw(){
     if(!soundVector[currentState].isPlaying()){
         soundVector[currentState].play();
     }
-    if(soundVector[currentState].getPosition() > 0.8){
+    if(soundVector[currentState].getPosition() > 0.7){
         soundVector[currentState].stop();
         markov.update();
     }

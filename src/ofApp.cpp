@@ -40,13 +40,4 @@ void ofApp::draw(){
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
-    if (key == ' '){
-        // if the space bar is pressed
-        // update the markov chain to the next state
-        
-        markov.update();
-        
-        
-    }
 }

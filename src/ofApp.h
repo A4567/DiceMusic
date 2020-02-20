@@ -19,4 +19,8 @@ class ofApp : public ofBaseApp{
     ofVec3f point;
     int radius;
     int rot;
+    float specMap, specLow,specHigh;
+    float specCol;
+    float xStep;
+    ofColor color;
 };

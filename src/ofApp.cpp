@@ -25,8 +25,9 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    
+    float *spectrum = ofSoundGetSpectrum(1);
+    float test = *spectrum * 1000000;
+   cout << *spectrum << endl;
 }
 
 //--------------------------------------------------------------
@@ -36,6 +37,7 @@ void ofApp::draw(){
     int currentState;
     currentState = markov.getState(); // get the current state of the matrix
     if(!soundVector[currentState].isPlaying()){
+       // soundVector[currentState].setVolume(0.0f);
         soundVector[currentState].play();
     }
     if(soundVector[currentState].getPosition() > 0.5){
@@ -47,19 +49,19 @@ void ofApp::draw(){
     }
     switch(currentState){
         case 0:
-            point.y += soundVector[currentState].getPosition() * 10;
+            point.y += soundVector[currentState].getPosition() * ofRandom(1, 100);
             rot += ofRandom(0,180);
             break;
         case 1:
-            point.y -= soundVector[currentState].getPosition() * 10;
+            point.y -= soundVector[currentState].getPosition() * ofRandom(1, 100);
             rot += ofRandom(0,180);
             break;
         case 2:
-            point.x += soundVector[currentState].getPosition() * 10;
+            point.x += soundVector[currentState].getPosition() * ofRandom(1, 100);
             rot -= ofRandom(0,180);
             break;
         case 3:
-            point.x -= soundVector[currentState].getPosition() * 10;
+            point.x -= soundVector[currentState].getPosition() * ofRandom(1, 100);
             rot -= ofRandom(0,180);
             break;
     }
@@ -75,7 +77,7 @@ void ofApp::draw(){
         ofRotateZDeg(-rot);
     }
     for(int i = 0; i < markov.getStatesNumber(); i++){
-        ofSetColor(ofRandom(25,200), ofRandom(25,200), ofRandom(25,200), 25);
+        ofSetColor(ofRandom(25,200), ofRandom(25,200), ofRandom(25,200), 50);
         ofDrawCircle(point*(1+i), radius*(i+1));
     }
 
